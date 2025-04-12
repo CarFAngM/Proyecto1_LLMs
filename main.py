@@ -24,10 +24,10 @@ if tema:
                 with st.expander(resultado["title"]):
                     contenido = resultado.get("content", "Sin contenido disponible.")
                     url = resultado.get("url", "#")
-                    st.markdown(f"**Contenido:** {contenido[:500]}...")
-                    st.markdown(f"[Enlace al artículo original]({url})")
+                    st.markdown(f"Contenido: {contenido[:500]}...")
+                    st.markdown(f"Enlace al artículo original {url} ")
             else:
-                st.warning(f"Resultado {i+1} no tiene título o está mal estructurado.")
+                st.warning(f"Resultado {i+1} no tiene título.")
 
 
         st.subheader("Resumen")
