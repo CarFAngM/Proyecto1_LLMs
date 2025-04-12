@@ -1,2 +1,19 @@
 .env
-venv
+
+# Entorno virtual
+venv/
+
+# Archivos de Python compilados
+__pycache__/
+*.py[cod]
+*.so
+
+# Configuración de VS Code
+.vscode/
+
+# Archivos temporales de sistema
+.DS_Store
+Thumbs.db
+
+# Streamlit
+.streamlit/config.toml
