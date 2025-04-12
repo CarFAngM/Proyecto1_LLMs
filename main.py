@@ -19,7 +19,7 @@ if tema:
     if resultados:
         st.subheader("Resultados encontrados")
 
-        for i, resultado in enumerate(resultados[:3]):
+        for i, resultado in enumerate(resultados[:5]):
             if isinstance(resultado, dict) and "title" in resultado:
                 with st.expander(resultado["title"]):
                     contenido = resultado.get("content", "Sin contenido disponible.")
