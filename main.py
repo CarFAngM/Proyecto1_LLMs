@@ -1,41 +1,43 @@
 import streamlit as st
-from dotenv import load_dotenv
+from dotenv import load_dotenv 
 
-from Modulos.busqueda import buscar_informacion
-from Modulos.rm import generar_resumen
-from Modulos.wc import crear_wordcloud
+from Modulos.bq import generar_informacion
+from Modulos.rm import hacer_resumen
+from Modulos.wc import hacer_wordcloud
 
-# Cargar variables de entorno (como API Keys)
 load_dotenv()
 
-# Configuración inicial de la app
-st.set_page_config(page_title="Asistente de Investigación", layout="wide")
-st.title("Asistente de Investigación Digital")
+st.set_page_config(page_title="Asistente", layout="wide")
+st.title("Asistente de Investigación")
 
-# Entrada del usuario
-tema = st.text_input("Ingresa un tema de investigación:")
 
-# Si se ingresó un tema, iniciar flujo
+tema = st.text_input("Ingresa un tema para investigar:")
 if tema:
-    with st.spinner("Buscando información en fuentes confiables..."):
-        resultados = buscar_informacion(tema)
+    with st.spinner("Buscando información..."):
+        resultados = generar_informacion(tema)
 
     if resultados:
         st.subheader("Resultados encontrados")
-        for resultado in resultados[:3]:
-            with st.expander(resultado["title"]):
-                st.markdown(f"**Contenido:** {resultado['content'][:500]}...")
-                st.markdown(f"[Enlace al artículo original]({resultado['url']})")
 
-        # Mostrar resumen ejecutivo
-        st.subheader("Resumen ejecutivo")
-        resumen = generar_resumen(resultados)
+        for i, resultado in enumerate(resultados[:3]):
+            if isinstance(resultado, dict) and "title" in resultado:
+                with st.expander(resultado["title"]):
+                    contenido = resultado.get("content", "Sin contenido disponible.")
+                    url = resultado.get("url", "#")
+                    st.markdown(f"**Contenido:** {contenido[:500]}...")
+                    st.markdown(f"[Enlace al artículo original]({url})")
+            else:
+                st.warning(f"Resultado {i+1} no tiene título o está mal estructurado.")
+
+
+        st.subheader("Resumen")
+        resumen = hacer_resumen(resultados)
         st.success(resumen)
 
-        # Mostrar nube de palabras
-        st.subheader("☁️ Nube de palabras clave")
-        imagen_wordcloud = crear_wordcloud(resultados)
+
+        st.subheader("Nube")
+        imagen_wordcloud = hacer_wordcloud(resultados)
         st.image(imagen_wordcloud, use_container_width=True)
 
     else:
-        st.warning("No se encontraron resultados para este tema. Intenta con otro término.")
+        st.warning("No se encontraron resultados para este tema.")

@@ -2,34 +2,32 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import io
 
-def generar_nube_palabras(entradas):
-    # Texto combinado
-    corpus = " ".join([item["content"] for item in entradas])
 
-    # Lista extendida de stopwords en español
-    palabras_vacias = {
-        "el", "la", "los", "las", "de", "del", "al", "en", "y", "o", "u", "es", "un", "una", "unos", "unas",
-        "con", "por", "para", "se", "su", "sus", "a", "que", "como", "más", "menos", "ya", "no", "sí", "lo",
-        "esto", "eso", "esa", "ese", "estos", "estas", "este", "cuando", "quien", "cual", "cuales", "también", "muy", "entre", "sobre", "todo", "nada",
-        "hay", "haber", "fue", "fueron", "ser", "era", "han", "ha", "he", "tiene", "tener", "cada", "durante",
-        "desde", "hasta"
-    }
+def hacer_wordcloud(resultado):
+    text = " ".join([res["content"] for res in resultado])
 
-    # Crear la nube de palabras
-    nube = WordCloud(
-        width=800,
-        height=400,
-        background_color="white",
-        stopwords=palabras_vacias
-    ).generate(corpus)
+    wordcloud = WordCloud(
+        width=650,
+        height=350,
+        background_color="black",
+        stopwords = [
+    "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any", "are", "aren't", "as", "at", "be", "because", "been", "before", 
+    "being", "below", "between", "both", "but", "by", "can't", "cannot", "could", "couldn't", "did", "didn't", "do", "does", "doesn't", "doing", "don't", 
+    "down", "during", "each", "few", "for", "from", "further", "had", "hadn't", "has", "hasn't", "have", "haven't", "having", "he", "he'd", "he'll", "he's", 
+    "her", "here", "here's", "hers", "herself", "him", "himself", "his", "how", "how's", "i", "i'd", "i'll", "i'm", "i've", "if", "in", "into", "is", "isn't", 
+    "it", "it's", "its", "itself", "let's", "me", "more", "most", "mustn't", "my", "myself", "no", "nor", "not", "of", "off", "on", "once", "only", "or", 
+    "other", "ought", "our", "ours", "ourselves", "out", "over", "own", "same", "shan't", "she", "she'd", "she'll", "she's", "should", "shouldn't", "so", 
+    "some", "such", "than", "that", "that's", "the", "their", "theirs", "them", "themselves", "then", "there", "there's", "these", "they", "they'd", "they'll", 
+    "they're", "they've", "this", "those", "through", "to", "too", "under", "until", "up", "very", "was", "wasn't", "we", "we'd", "we'll", "we're", "we've", 
+    "were", "weren't", "what", "what's", "when", "when's", "where", "where's", "which", "while", "who", "who's", "whom", "why", "why's", "with", "won't", 
+    "would", "wouldn't", "you", "you'd", "you'll", "you're", "you've", "your", "yours", "yourself", "yourselves"
+]
+    ).generate(text)
 
-    # Guardar imagen en objeto BytesIO
-    buffer_img = io.BytesIO()
-    plt.figure(figsize=(10, 5))
-    plt.imshow(nube, interpolation="bilinear")
-    plt.axis("off")
-    plt.tight_layout()
-    plt.savefig(buffer_img, format="png")
-    buffer_img.seek(0)
+    imagen = io.BytesIO()
+    plt.figure(figsize=(8, 5))
+    plt.imshow(wordcloud, interpolation="bilinear")
+    plt.savefig(imagen, format="jpg")
+    imagen.seek(0)
 
-    return buffer_img
+    return imagen
